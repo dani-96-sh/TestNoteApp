@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_application_1/Screens/AddTask.dart';
 import 'package:flutter_application_1/models/Tasks.dart';
 import 'package:flutter_application_1/widget/Task.dart';
@@ -14,6 +15,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   var box = Hive.box<Task>('task');
+  bool isShowFab = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,12 +45,25 @@ class _HomeScreenState extends State<HomeScreen> {
         child: ValueListenableBuilder(
           valueListenable: box.listenable(),
           builder: (context, value, child) {
-            return ListView.builder(
-              itemCount: box.values.length,
-              itemBuilder: (BuildContext context, int index) {
-                var task = box.values.toList()[index];
-                return Taskwidget(task: task);
+            return NotificationListener<UserScrollNotification>(
+              onNotification: (notification) {
+                setState(() {
+                  if (notification.direction == ScrollDirection.forward) {
+                    isShowFab = true;
+                  }
+                  if (notification.direction == ScrollDirection.reverse) {
+                    isShowFab = false;
+                  }
+                });
+                return true;
               },
+              child: ListView.builder(
+                itemCount: box.values.length,
+                itemBuilder: (BuildContext context, int index) {
+                  var task = box.values.toList()[index];
+                  return Taskwidget(task: task);
+                },
+              ),
             );
           },
         ),
