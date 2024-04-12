@@ -19,24 +19,27 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AddTask(),
+      floatingActionButton: Visibility(
+        visible: isShowFab,
+        child: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddTask(),
+              ),
+            );
+          },
+          child: Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              color: HexColor('#18Daa3'),
+              borderRadius: BorderRadius.circular(40),
             ),
-          );
-        },
-        child: Container(
-          width: 60,
-          height: 60,
-          decoration: BoxDecoration(
-            color: HexColor('#18Daa3'),
-            borderRadius: BorderRadius.circular(40),
-          ),
-          child: Image(
-            image: AssetImage('images/icon_add.png'),
+            child: Image(
+              image: AssetImage('images/icon_add.png'),
+            ),
           ),
         ),
       ),
