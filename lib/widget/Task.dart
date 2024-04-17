@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_application_1/Screens/EditeTaskSc.dart';
 import 'package:flutter_application_1/models/Tasks.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -73,26 +75,36 @@ class _TaskwidgetState extends State<Taskwidget> {
                     Spacer(),
                     Row(
                       children: [
-                        Container(
-                          width: 90,
-                          height: 28,
-                          decoration: BoxDecoration(
-                            color: HexColor('#E2F6F1'),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: Row(
-                              children: [
-                                Image.asset('images/icon_edit.png'),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text('ویرایش')
-                              ],
+                        GestureDetector(
+                          child: Container(
+                            width: 90,
+                            height: 28,
+                            decoration: BoxDecoration(
+                              color: HexColor('#E2F6F1'),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: Row(
+                                children: [
+                                  Image.asset('images/icon_edit.png'),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text('ویرایش')
+                                ],
+                              ),
                             ),
                           ),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => EditeTask(
+                                          task: widget.task,
+                                        )));
+                          },
                         ),
                         SizedBox(
                           width: 20,
