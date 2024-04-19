@@ -64,7 +64,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemCount: box.values.length,
                 itemBuilder: (BuildContext context, int index) {
                   var task = box.values.toList()[index];
-                  return Taskwidget(task: task);
+                  return Dismissible(
+                      key: UniqueKey(),
+                      onDismissed: (direction) {
+                        task.delete();
+                      },
+                      child: Taskwidget(task: task));
                 },
               ),
             );

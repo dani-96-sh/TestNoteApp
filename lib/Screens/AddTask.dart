@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/models/Tasks.dart';
+import 'package:flutter_application_1/widget/utility.dart';
 
 import 'package:hexcolor/hexcolor.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:time_pickerr/time_pickerr.dart';
 
 class AddTask extends StatefulWidget {
   const AddTask({super.key});
@@ -19,6 +22,9 @@ class _AddTaskState extends State<AddTask> {
 
   var controllertitlecontent = TextEditingController();
   var controllersubtitlecontent = TextEditingController();
+  DateTime? _time;
+
+  int selecteditem = 0;
   @override
   void initState() {
     // TODO: implement initState
@@ -34,6 +40,7 @@ class _AddTaskState extends State<AddTask> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: HexColor('#E5E5E5'),
       body: SafeArea(
         child: Padding(
@@ -97,7 +104,54 @@ class _AddTaskState extends State<AddTask> {
                   ),
                 ),
               ),
-              Spacer(),
+              Directionality(
+                textDirection: TextDirection.rtl,
+                child: CustomHourPicker(
+                  title: 'انتخاب زمان ',
+                  negativeButtonText: 'حذف کن',
+                  positiveButtonText: 'انتخاب کن',
+                  elevation: 4,
+                  onNegativePressed: (context) {},
+                  onPositivePressed: (context, time) {
+                    _time = time;
+                  },
+                ),
+              ),
+              Container(
+                height: 200,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: GetTaskTypeList().length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selecteditem = index;
+                        });
+                      },
+                      child: Container(
+                        margin: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                                width: selecteditem == index ? 4 : 1,
+                                color: selecteditem == index
+                                    ? Colors.lightBlue
+                                    : Colors.grey)),
+                        width: 140,
+                        height: 200,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(GetTaskTypeList()[index].image),
+                            Text(GetTaskTypeList()[index].title)
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
               ElevatedButton(
                 onPressed: () {
                   String titlecontent = controllertitlecontent.text;
@@ -123,6 +177,10 @@ class _AddTaskState extends State<AddTask> {
   }
 
   addtask(String title, String subtitle) {
-    box.add(Task(title: title, subtitle: subtitle));
+    box.add(Task(
+        title: title,
+        subtitle: subtitle,
+        time: _time!,
+        taskType: GetTaskTypeList()[selecteditem]));
   }
 }

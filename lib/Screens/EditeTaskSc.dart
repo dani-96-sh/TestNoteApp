@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/Tasks.dart';
+import 'package:flutter_application_1/widget/utility.dart';
 
 import 'package:hexcolor/hexcolor.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:time_pickerr/time_pickerr.dart';
 
 // ignore: must_be_immutable
 class EditeTask extends StatefulWidget {
@@ -17,6 +19,9 @@ class _EditeTaskState extends State<EditeTask> {
   FocusNode negahbanTwo = FocusNode();
 
   var box = Hive.box<Task>('task');
+  DateTime? _time;
+
+  int selecteditem = 0;
 
   var controllertitlecontent;
   var controllersubtitlecontent;
@@ -102,6 +107,54 @@ class _EditeTaskState extends State<EditeTask> {
                   ),
                 ),
               ),
+              Directionality(
+                textDirection: TextDirection.rtl,
+                child: CustomHourPicker(
+                  title: 'انتخاب زمان ',
+                  negativeButtonText: 'حذف کن',
+                  positiveButtonText: 'انتخاب کن',
+                  elevation: 4,
+                  onNegativePressed: (context) {},
+                  onPositivePressed: (context, time) {
+                    _time = time;
+                  },
+                ),
+              ),
+              Container(
+                height: 200,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: GetTaskTypeList().length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selecteditem = index;
+                        });
+                      },
+                      child: Container(
+                        margin: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                                width: selecteditem == index ? 4 : 1,
+                                color: selecteditem == index
+                                    ? Colors.lightBlue
+                                    : Colors.grey)),
+                        width: 140,
+                        height: 200,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(GetTaskTypeList()[index].image),
+                            Text(GetTaskTypeList()[index].title)
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
               Spacer(),
               ElevatedButton(
                 onPressed: () {
@@ -130,6 +183,8 @@ class _EditeTaskState extends State<EditeTask> {
   EditeTask(String title, String subtitle) {
     widget.task.title = title;
     widget.task.subtitle = subtitle;
+    widget.task.time = _time!;
+    widget.task.taskType = GetTaskTypeList()[selecteditem];
     widget.task.save();
   }
 }

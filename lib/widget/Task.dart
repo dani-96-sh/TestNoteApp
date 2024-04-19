@@ -125,7 +125,8 @@ class _TaskwidgetState extends State<Taskwidget> {
                                 SizedBox(
                                   width: 5,
                                 ),
-                                Text('10:30')
+                                Text(
+                                    '${widget.task.time.hour}:${getminute(widget.task.time)}')
                               ],
                             ),
                           ),
@@ -135,11 +136,19 @@ class _TaskwidgetState extends State<Taskwidget> {
                   ],
                 ),
               ),
-              Image.asset('images/workout.png')
+              Image.asset('${widget.task.taskType.image}')
             ],
           ),
         ),
       ),
     );
+  }
+
+  getminute(DateTime time) {
+    if (time.minute < 10) {
+      return '0${time.minute}';
+    } else {
+      return time.minute.toString();
+    }
   }
 }
