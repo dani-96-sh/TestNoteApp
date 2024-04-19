@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/Screens/EditeTaskSc.dart';
@@ -46,24 +47,29 @@ class _TaskwidgetState extends State<Taskwidget> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Checkbox(
-                              value: ischeecked,
-                              onChanged: (value) {
-                                setState(() {
-                                  ischeecked = value!;
-                                });
-                              }),
-                          Text(
-                            widget.task.title,
-                            style: TextStyle(overflow: TextOverflow.ellipsis),
-                          )
-                        ],
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Transform.scale(
+                          scale: 1.5,
+                          child: Checkbox(
+                            value: ischeecked,
+                            onChanged: (value) {
+                              setState(() {
+                                ischeecked = value!;
+                              });
+                            },
+                            activeColor: Colors.green,
+                            side: BorderSide(width: 1),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6)),
+                          ),
+                        ),
+                        Text(
+                          widget.task.title,
+                          style: TextStyle(overflow: TextOverflow.ellipsis),
+                        )
+                      ],
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),

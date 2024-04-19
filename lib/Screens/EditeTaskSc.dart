@@ -39,6 +39,12 @@ class _EditeTaskState extends State<EditeTask> {
     negahbanTwo.addListener(() {
       setState(() {});
     });
+
+    var index = GetTaskTypeList().indexWhere((element) {
+      return element.TaskTypeEnum == widget.task.taskType.TaskTypeEnum;
+    });
+
+    selecteditem = index;
   }
 
   @override
